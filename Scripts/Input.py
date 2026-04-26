@@ -3,46 +3,37 @@ from pyglet.app import exit
 
 from Scripts.InputDefs import Keys
 
-# State Class: Used for easy creation of Finite State Machines
-class State:
-    NAME = ""
-    VALUE = False
-    
-    def __new__(self, name=str):
-        self.NAME = name
-        return self
+global updateInput
 
-    def switchState() -> None:
-        if State.VALUE==True:
-            State.VALUE = False
-        else:
-            State.VALUE = True
-
-
-def updateInput(symbol = any, modifiers = any, OBJLIST = list) -> None:
+def updateInput(symbol = any, modifiers = any, OBJ_LIST = list, PREFERABLE_BOOL = bool) -> None:
 
     if getKeyName(symbol) == "ESCAPE":
         exit()
-    
-    for OBJECT in OBJLIST:
+    print(OBJ_LIST)
+    for OBJECT in OBJ_LIST:
+        print(OBJECT.Name)
         match getKeyName(symbol):
             case "W":
-                OBJECT.moveUp.switchState()
+                OBJECT.switchState(OBJECT.moveUp, PREFERABLE_BOOL)
+                continue
             case "A":
-                OBJECT.moveLeft.switchState()
+                OBJECT.switchState(OBJECT.moveLeft, PREFERABLE_BOOL)
+                #OBJECT()
+                continue
             case "S":
-                OBJECT.moveDown.switchState()
+               print(getKeyName(symbol))
+               OBJECT.switchState(OBJECT.moveDown, PREFERABLE_BOOL)
+               #OBJECT()
+               continue
             case "D":
-                OBJECT.moveRight.switchState()
+                OBJECT.switchState(OBJECT.moveRight, PREFERABLE_BOOL)
+                #OBJECT()
+                continue
             case _:
-                OBJECT._updateAllStatesInListToFalse()
-                break
+                pass
                 
-
-        OBJECT.Update()
+        
 
 
 def getKeyName(KEY=int) -> str:
     return Keys.key[KEY]
-
-from Scripts.Entity import Object
