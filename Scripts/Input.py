@@ -5,35 +5,39 @@ from Scripts.InputDefs import Keys
 
 global updateInput
 
+class Input:
+    
+    isPressed = False
+
+
+    def Update(STATE_LIST=list):
+        for X in STATE_LIST:
+            for Y in X.StateList:
+                if Y[0].VALUE is True:
+                    Input.isPressed = True
+
+# TODO: Add support for handling modifiers
 def updateInput(symbol = any, modifiers = any, OBJ_LIST = list, PREFERABLE_BOOL = bool) -> None:
 
     if getKeyName(symbol) == "ESCAPE":
         exit()
-    print(OBJ_LIST)
+    
     for OBJECT in OBJ_LIST:
-        print(OBJECT.Name)
         match getKeyName(symbol):
             case "W":
-                OBJECT.switchState(OBJECT.moveUp, PREFERABLE_BOOL)
+                OBJECT.moveUp.switchState(PREFERABLE_BOOL)
                 continue
             case "A":
-                OBJECT.switchState(OBJECT.moveLeft, PREFERABLE_BOOL)
-                #OBJECT()
+                OBJECT.moveLeft.switchState(PREFERABLE_BOOL)
                 continue
             case "S":
-               print(getKeyName(symbol))
-               OBJECT.switchState(OBJECT.moveDown, PREFERABLE_BOOL)
-               #OBJECT()
-               continue
+                OBJECT.moveDown.switchState(PREFERABLE_BOOL)
+                continue
             case "D":
-                OBJECT.switchState(OBJECT.moveRight, PREFERABLE_BOOL)
-                #OBJECT()
+                OBJECT.moveRight.switchState(PREFERABLE_BOOL)
                 continue
             case _:
                 pass
-                
-        
-
 
 def getKeyName(KEY=int) -> str:
     return Keys.key[KEY]

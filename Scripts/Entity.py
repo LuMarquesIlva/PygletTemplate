@@ -7,31 +7,14 @@ class State:
     NAME = ""
     VALUE = False
     
-    def __new__(self, name=str):
-        self.NAME = name
+    
+    # Constructor and instanciator -----
+    def __init__(self, NAME=str):
+        self.Name = NAME
+
+    def __call__(self) -> State:
         return self
-
-class Object:
-    Name = ""
-
-    x, y = 0.0, 0.0
-    speed = 5
-    
-    moveUp = State("moveUp")
-    moveDown = State("moveDown")
-    moveRight = State("moveRight")
-    moveLeft = State("moveLeft")
-    
-    StateList = [
-        [moveUp, "self.y -= self.speed"],
-        [moveDown, "self.y += self.speed"], 
-        [moveRight, "self.x += self.speed"], 
-        [moveLeft, "self.x -= self.speed"]
-    ]
-
-    def __new__(self, NAME=str) -> Object:
-         self.Name = NAME
-         return self
+    # ----------------------------------
     
     def switchState(self) -> None:
         if self.VALUE==True:
@@ -39,14 +22,46 @@ class Object:
         else:
             self.VALUE = True
     
-    # Overload Method
+        # Overload Method
     def switchState(self, STATEVAL=bool) -> None:
         if self.VALUE != STATEVAL:
             self.VALUE = STATEVAL
+
+class Object:
+    Name = ""
+
+    x, y = 0.0, 0.0
+    speed = 1
     
-    '''
-            def __call__(self):
-        for State in self.StateList:
-            if State[0].Value is True:
-                exec(State[1]) 
-    '''
+    moveUp = State("moveUp")
+    moveDown = State("moveDown")
+    moveRight = State("moveRight")
+    moveLeft = State("moveLeft")
+    
+    StateList = [
+        [moveUp, "{}.y -= {}.speed"],
+        [moveDown, "{}.y += {}.speed"], 
+        [moveRight, "{}.x += {}.speed"], 
+        [moveLeft, "{}.x -= {}.speed"]
+    ]
+
+
+    # Constructor and instanciator -----
+    def __init__(self, NAME=str):
+        self.Name = NAME
+
+    def __call__(self) -> Object:
+        return self
+    # ----------------------------------
+
+    def UpdateObjects(OBJ_LIST=list):
+        for XY in OBJ_LIST:
+            for YZ in XY.StateList:
+                Y = YZ[0] # StateList[0]
+                Z = YZ[1] # StateList[1]
+
+                if Y.VALUE is True:
+                    Z = Z.format(XY.Name, XY.Name)
+                    return Z # Return the formatted variable
+        
+                #print(f"{XY.Name} | {XY.x} | {XY.y}")
