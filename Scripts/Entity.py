@@ -27,24 +27,27 @@ class State:
         if self.VALUE != STATEVAL:
             self.VALUE = STATEVAL
 
+# Object class: Mainly for basic shapes and movement
 class Object:
     Name = ""
 
-    x, y = 0.0, 0.0
-    speed = 1
+    x, y = 0.0, 0.0 # Object Position
+    speed = 3.5 # Object Speed
     
+    # States declarations: Basically my attempt at Finite State Machines by guessing what it is ----
     moveUp = State("moveUp")
     moveDown = State("moveDown")
     moveRight = State("moveRight")
     moveLeft = State("moveLeft")
     
     StateList = [
-        [moveUp, "{}.y -= {}.speed"],
-        [moveDown, "{}.y += {}.speed"], 
+        [moveUp, "{}.y += {}.speed"],
+        [moveDown, "{}.y -= {}.speed"], 
         [moveRight, "{}.x += {}.speed"], 
         [moveLeft, "{}.x -= {}.speed"]
     ]
 
+    # ------------------------------------------------------------------------------------------------
 
     # Constructor and instanciator -----
     def __init__(self, NAME=str):
@@ -55,13 +58,43 @@ class Object:
     # ----------------------------------
 
     def UpdateObjects(OBJ_LIST=list):
-        for XY in OBJ_LIST:
-            for YZ in XY.StateList:
+        for XY in OBJ_LIST: # For every object on the list
+            for YZ in XY.StateList: # Get the StateList for them
                 Y = YZ[0] # StateList[0]
                 Z = YZ[1] # StateList[1]
 
-                if Y.VALUE is True:
-                    Z = Z.format(XY.Name, XY.Name)
+                if Y.VALUE is True: # If the State is True
+                    Z = Z.format(XY.Name, XY.Name) # Format the Name of it to use with the action
                     return Z # Return the formatted variable
-        
-                #print(f"{XY.Name} | {XY.x} | {XY.y}")
+                
+
+class Entity(Object):
+    Name=""
+    Shape = pyglet.shapes.ShapeBase # Shape Declaration
+
+
+    # Constructor ----
+    def __init__(self, Name=str, _BATCH=pyglet.graphics.Batch):
+        self.Name = Name
+        self.Shape = pyglet.shapes.Rectangle(self.x, self.y, 50, 80, color=(100, 22, 20), batch=_BATCH)
+    # ---------------
+
+
+    def UpdateEntities(ENT_LIST=list):
+        for XY in ENT_LIST: # For every Item on the list
+            if type(XY) is Entity:  # If it's type is Entity
+                
+                # Update the Position Values
+                XY.Shape.x = XY.x 
+                XY.Shape.y = XY.y
+
+
+                for YZ in XY.StateList: # Get the StateLis
+                    Y = YZ[0] # StateList[0]
+                    Z = YZ[1] # StateList[1]
+
+                    if Y.VALUE is True: # If the State is True
+                        Z = Z.format(XY.Name, XY.Name) # Format the action
+                        return Z # Return the formatted variable
+            else:
+                pass
