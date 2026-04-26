@@ -10,9 +10,14 @@ label = pyglet.text.Label('Olá, Mundo!',
                           x=window.width//2, y=window.height//2,
                           anchor_x='center', anchor_y='center')
 
+Player = Object()
+
+ObjList = [Player]
+
 @window.event
 def on_key_press(symbol, modifiers):
-    print(getKeyName(symbol))
+    updateInput(symbol, modifiers, ObjList)
+    print(Player.x)
 
 @window.event
 def on_draw():
